@@ -50,3 +50,11 @@ model.compile(
         "cls_out": [tf.keras.metrics.BinaryAccuracy(), tf.keras.metrics.AUC()],
     },
 )
+
+flowchart TD
+    A[🌍 Data Sources <br> ERA5 · Bhuvan · FIRMS] --> B[🛠 Data Preprocessing <br> Cleaning · LULC Encoding · Alignment]
+    B --> C[⏳ Sequence Generation <br> Sliding Window (6h → 1/2/3h)]
+    C --> D[🧠 CNN Model <br> Feature Extraction]
+    D --> E1[🔥 Classification Head <br> Fire / No Fire]
+    D --> E2[📈 Regression Head <br> Fire Intensity]
+    E1 & E2 --> F[✅ Predictions <br> Risk Maps & Values]
