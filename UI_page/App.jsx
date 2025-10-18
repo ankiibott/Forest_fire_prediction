@@ -11,21 +11,21 @@ const CHANNELS = 7;
 const API_ENDPOINT = 'http://localhost:5000/api/predict';
 
 const DATASET_NAMES = [
-  { name: 'T2M (2m Temperature)', abbreviation: 'T2M', type: 'dynamic', files: 6 },
-  { name: 'D2M (2m Dew Point Temp)', abbreviation: 'D2M', type: 'dynamic', files: 6 },
-  { name: 'TP (Total Precipitation)', abbreviation: 'TP', type: 'dynamic', files: 6 },
-  { name: 'V10 (10m V-Wind)', abbreviation: 'V10', type: 'dynamic', files: 6 },
-  { name: 'U10 (10m U-Wind)', abbreviation: 'U10', type: 'dynamic', files: 6 },
-  { name: 'LULC (Land Cover)', abbreviation: 'LULC', type: 'static', files: 1 },
-  { name: 'DEM (Digital Elevation Model)', abbreviation: 'DEM', type: 'static', files: 1 },
+    { name: 'T2M (2m Temperature)', abbreviation: 'T2M', type: 'dynamic', files: 6 },
+    { name: 'D2M (2m Dew Point Temp)', abbreviation: 'D2M', type: 'dynamic', files: 6 },
+    { name: 'TP (Total Precipitation)', abbreviation: 'TP', type: 'dynamic', files: 6 },
+    { name: 'V10 (10m V-Wind)', abbreviation: 'V10', type: 'dynamic', files: 6 },
+    { name: 'U10 (10m U-Wind)', abbreviation: 'U10', type: 'dynamic', files: 6 },
+    { name: 'LULC (Land Cover)', abbreviation: 'LULC', type: 'static', files: 1 },
+    { name: 'DEM (Digital Elevation Model)', abbreviation: 'DEM', type: 'static', files: 1 },
 ];
 
 // Default coordinates centered near Dehradun, Uttarakhand
 const DEFAULT_BOUNDS = {
-  latMin: '30.2',
-  latMax: '30.3',
-  lonMin: '77.8',
-  lonMax: '77.9',
+    latMin: '30.2',
+    latMax: '30.3',
+    lonMin: '77.8',
+    lonMax: '77.9',
 };
 
 // --- Time Details for Client-Side Fallback (Matching expected API format for UI stability) ---
@@ -120,89 +120,90 @@ const runPredictionAPI = async ({ latMin, latMax, lonMin, lonMax, inputFiles }) 
 // --- Helper Functions for Visualization ---
 
 const getFireColor = (probability) => {
-  if (probability < 0.1) return 'rgba(255, 255, 255, 0)'; // Mostly transparent (No fire)
-  if (probability < 0.3) return `rgba(255, 255, 0, ${0.4 + probability * 0.3})`; // Yellow/Low Risk
-  if (probability < 0.6) return `rgba(255, 165, 0, ${0.5 + probability * 0.4})`; // Orange/Medium Risk
-  return `rgba(255, 0, 0, ${0.6 + probability * 0.4})`; // Red/High Risk
+    if (probability < 0.1) return 'rgba(255, 255, 255, 0)'; // Mostly transparent (No fire)
+    if (probability < 0.3) return `rgba(255, 255, 0, ${0.4 + probability * 0.3})`; // Yellow/Low Risk
+    if (probability < 0.6) return `rgba(255, 165, 0, ${0.5 + probability * 0.4})`; // Orange/Medium Risk
+    return `rgba(255, 0, 0, ${0.6 + probability * 0.4})`; // Red/High Risk
 };
 
 // --- Static Grid Visualization Component ---
 const StaticGridVisualization = ({ bounds, prediction, currentHorizon, timeDetails }) => {
-  
-  if (!prediction || prediction.length === 0) return null;
+    
+    if (!prediction || prediction.length === 0) return null;
 
-  const [[latMin, lonMin], [latMax, lonMax]] = bounds;
-  
-  const horizonData = prediction[currentHorizon];
-  const titleDate = timeDetails?.date || 'N/A';
-  const titleTime = timeDetails?.predStart || 'N/A';
-  
-  return (
-    <div className="relative w-full h-[550px] p-2 bg-white rounded-xl shadow-inner border border-gray-100">
-        <h3 className="text-lg font-bold text-center mb-4 text-gray-700">
-            Fire Probability Grid @ {titleDate} {titleTime} (Hour +{currentHorizon + 1})
-        </h3>
+    const [latMin, lonMin] = bounds[0];
+    const [latMax, lonMax] = bounds[1];
+    
+    const horizonData = prediction[currentHorizon];
+    const titleDate = timeDetails?.date || 'N/A';
+    const titleTime = timeDetails?.predStart || 'N/A';
+    
+    return (
+        <div className="relative w-full h-[550px] p-2 bg-white rounded-xl shadow-inner border border-gray-100">
+            <h3 className="text-lg font-bold text-center mb-4 text-gray-700">
+                Fire Probability Grid @ {titleDate} {titleTime} (Hour +{currentHorizon + 1})
+            </h3>
 
-        {/* Outer container for the plot area and axes */}
-        <div className="relative w-full h-[450px] mx-auto flex items-center justify-center">
+            {/* Outer container for the plot area and axes */}
+            <div className="relative w-full h-[450px] mx-auto flex items-center justify-center">
 
-            {/* Y-Axis Label */}
-            <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -rotate-90 text-sm font-semibold text-gray-600">
-                Latitude
-            </div>
+                {/* Y-Axis Label */}
+                <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -rotate-90 text-sm font-semibold text-gray-600">
+                    Latitude
+                </div>
 
-            {/* Plot Area Container (13x13 Grid) */}
-            <div className="flex-grow h-full bg-gray-50 shadow-inner rounded-lg overflow-hidden border border-gray-300 mx-10">
-                <div 
-                    className="w-full h-full grid"
-                    style={{
-                        gridTemplateColumns: `repeat(${PATCH_SIZE}, 1fr)`,
-                        gridTemplateRows: `repeat(${PATCH_SIZE}, 1fr)`,
-                    }}
-                >
-                    {horizonData.slice().reverse().map((row, i) => ( // Reverse rows so Lat Max (North) is at the top
-                        row.map((prob, j) => (
-                            <div
-                                key={`${i}-${j}`}
-                                className="border border-gray-200/50 transition duration-100 cursor-help"
-                                style={{
-                                    backgroundColor: getFireColor(prob),
-                                    opacity: 1, 
-                                }}
-                                title={`Lat Cell: ${latMax - i}, Lon Cell: ${lonMin + j} | Prob: ${prob.toFixed(4)}`}
-                            />
-                        ))
-                    ))}
+                {/* Plot Area Container (13x13 Grid) */}
+                <div className="flex-grow h-full bg-gray-50 shadow-inner rounded-lg overflow-hidden border border-gray-300 mx-10">
+                    <div 
+                        className="w-full h-full grid"
+                        style={{
+                            gridTemplateColumns: `repeat(${PATCH_SIZE}, 1fr)`,
+                            gridTemplateRows: `repeat(${PATCH_SIZE}, 1fr)`,
+                        }}
+                    >
+                        {horizonData.slice().reverse().map((row, i) => ( // Reverse rows so Lat Max (North) is at the top
+                            row.map((prob, j) => (
+                                <div
+                                    key={`${i}-${j}`}
+                                    className="border border-gray-200/50 transition duration-100 cursor-help"
+                                    style={{
+                                        backgroundColor: getFireColor(prob),
+                                        opacity: 1, 
+                                    }}
+                                    title={`Lat Cell: ${latMax - i}, Lon Cell: ${lonMin + j} | Prob: ${prob.toFixed(4)}`}
+                                />
+                            ))
+                        ))}
+                    </div>
+                </div>
+
+                {/* Y-Axis Max/Min Markers */}
+                <div className="absolute right-0 top-0 text-xs font-medium text-gray-700 mt-2">
+                    {latMax.toFixed(4)}
+                </div>
+                <div className="absolute right-0 bottom-0 text-xs font-medium text-gray-700 mb-2">
+                    {latMin.toFixed(4)}
                 </div>
             </div>
-
-            {/* Y-Axis Max/Min Markers */}
-            <div className="absolute right-0 top-0 text-xs font-medium text-gray-700 mt-2">
-                {latMax.toFixed(4)}
+            
+            {/* X-Axis Label */}
+            <div className="text-center mt-2 text-sm font-semibold text-gray-600">
+                Longitude
             </div>
-            <div className="absolute right-0 bottom-0 text-xs font-medium text-gray-700 mb-2">
-                {latMin.toFixed(4)}
+            
+            {/* X-Axis Min/Max Markers */}
+            <div className="flex justify-between mx-10 text-xs font-medium text-gray-700">
+                <span>{lonMin.toFixed(4)}</span>
+                <span>{lonMax.toFixed(4)}</span>
             </div>
         </div>
-        
-        {/* X-Axis Label */}
-        <div className="text-center mt-2 text-sm font-semibold text-gray-600">
-            Longitude
-        </div>
-        
-        {/* X-Axis Min/Max Markers */}
-        <div className="flex justify-between mx-10 text-xs font-medium text-gray-700">
-            <span>{lonMin.toFixed(4)}</span>
-            <span>{lonMax.toFixed(4)}</span>
-        </div>
-    </div>
-  );
+    );
 };
 
 
 // --- Main Application Component ---
-function App() { // CHANGED to function declaration for robustness
-  
+function App() { 
+    
     const initialFilesState = DATASET_NAMES.reduce((acc, { abbreviation, type }) => ({ 
         ...acc, 
         [abbreviation]: type === 'dynamic' ? [] : null 
