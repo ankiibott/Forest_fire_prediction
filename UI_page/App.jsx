@@ -201,8 +201,7 @@ const StaticGridVisualization = ({ bounds, prediction, currentHorizon, timeDetai
 
 
 // --- Main Application Component ---
-const App = () => {
-    // We no longer need to alias them here as they are aliased in the import statement
+function App() { // CHANGED to function declaration for robustness
   
     const initialFilesState = DATASET_NAMES.reduce((acc, { abbreviation, type }) => ({ 
         ...acc, 
@@ -603,6 +602,6 @@ const App = () => {
             </div>
         </div>
     );
-};
+}
 
 export default App;
