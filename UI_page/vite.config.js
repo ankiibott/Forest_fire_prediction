@@ -3,11 +3,6 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
-// Use CommonJS style exports to reliably load PostCSS plugins 
-// without complex ES Module paths.
-// We are explicitly requiring the packages that you correctly installed:
-// tailwindcss and autoprefixer.
-
 export default defineConfig({
   plugins: [
     react(),
@@ -15,7 +10,9 @@ export default defineConfig({
   css: {
     postcss: {
       plugins: [
-        require('tailwindcss'),
+        // CRITICAL FIX: Use the new dedicated PostCSS plugin package
+        require('@tailwindcss/postcss'),
+        // Keep autoprefixer
         require('autoprefixer'),
       ],
     },
