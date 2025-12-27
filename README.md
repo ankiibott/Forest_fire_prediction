@@ -1,6 +1,6 @@
 # FirePredict: Spatiotemporal Wildfire Risk Forecasting
 
-<img width="1408" height="736" alt="Gemini_Generated_Image_h3rmpwh3rmpwh3rm" src="https://github.com/user-attachments/assets/83d42e63-0e17-4ab0-ad98-5601690c69bf" />
+![WhatsApp Image 2025-10-27 at 8 36 59 PM](https://github.com/user-attachments/assets/411ac497-1ef9-42d2-ab3e-5ca5db3fded3) ![WhatsApp Image 2025-10-27 at 8 37 26 PM](https://github.com/user-attachments/assets/3be94aa0-eae5-4c14-b314-b93b6f1ab261)
 
 
 ![Project Status](https://img.shields.io/badge/Status-In--Development-orange)
