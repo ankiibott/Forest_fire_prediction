@@ -1,7 +1,6 @@
 # FirePredict: Spatiotemporal Wildfire Risk Forecasting
 
-![WhatsApp Image 2025-10-27 at 8 36 59 PM](https://github.com/user-attachments/assets/411ac497-1ef9-42d2-ab3e-5ca5db3fded3)
-![WhatsApp Image 2025-10-27 at 8 37 26 PM](https://github.com/user-attachments/assets/3be94aa0-eae5-4c14-b314-b93b6f1ab261)
+![WhatsApp Image 2025-10-27 at 8 36 59 PM](https://github.com/user-attachments/assets/411ac497-1ef9-42d2-ab3e-5ca5db3fded3) ![WhatsApp Image 2025-10-27 at 8 37 26 PM](https://github.com/user-attachments/assets/3be94aa0-eae5-4c14-b314-b93b6f1ab261)
 ![WhatsApp Image 2025-10-28 at 8 55 13 PM](https://github.com/user-attachments/assets/0055aff2-2f2d-46f1-afde-8258be453b01)
 
 
