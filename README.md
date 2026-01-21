@@ -47,7 +47,6 @@ A Leaflet-powered interactive map that visualizes "High," "Medium," and "Low" ri
 ### 3. AI Research Assistant
 An integrated chat interface capable of exploring and querying uploaded **NetCDF** files, providing insights into the ocean and atmospheric data trends.
 
----
 
 ## 📂 Repository Structure
 
