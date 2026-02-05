@@ -34,7 +34,7 @@ To capture the evolution of fire conditions, we implemented a **Sliding Window**
 * **Output Window:** 3 hours of future fire probability prediction.
 * **Format:** All temporal data is serialized into a `.csv` structure to facilitate the sliding window generator before being reshaped into tensors for the model.
 
----
+
 
 ## 🖥️ System Modules
 
