@@ -37,7 +37,6 @@ To capture the evolution of fire conditions, we implemented a **Sliding Window**
 
 
 ## 🖥️ System Modules
-
 ### 1. Geospatial Analysis Dashboard
 The core interface allows for the upload of 7 geospatial channels (32 files total). It generates a **13×13 fire probability grid** with high-precision latitude/longitude bounds.
 
